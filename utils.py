@@ -1,4 +1,6 @@
 
+from thompson import *
+import re
 def precedence(op):
     if op == '|':
         return 3
@@ -95,6 +97,9 @@ converted = parseExp(expression)
 print('converted expression: ', converted)
 postfix = evaluate(converted)
 print('postfix expression: ', postfix)
+afn = thompson_alg(postfix)
+#graphicAFN(afn)
+#generateTXT(afn)
 
 
 
