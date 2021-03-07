@@ -16,6 +16,14 @@ class StackElement:
         self.f=f
         self.transitions = transitions
 
+#method from https://www.geeksforgeeks.org/python-get-unique-values-list/
+def unique(alphabet):
+    # insert the list to the set
+    list_set = set(alphabet)
+    # convert the set to the list
+    unique_list = (list(list_set))
+    return unique_list
+
 def thompson_alg(postfix):
     stack = []
     counter = 0
@@ -23,8 +31,8 @@ def thompson_alg(postfix):
 
     for c in postfix:
         if (c != '(') and (c != ')')  and (c != '*') and (c != '|') and (c != '.'):
-            state1 = 'q' + str(counter)
-            state2 = 'q' + str(counter+1)
+            state1 = str(counter)
+            state2 = str(counter+1)
             states = [state1, state2]
             counter+=2
             transition = Transition(start=state1, transition=c, end=state2)
@@ -36,8 +44,8 @@ def thompson_alg(postfix):
             if (c == '|'):
                 element2=stack.pop()
                 element1=stack.pop()
-                initial_state = 'q' + str(counter)
-                final_state = 'q' + str(counter+1)
+                initial_state = str(counter)
+                final_state = str(counter+1)
                 counter+=2
                 transition1 = Transition(start=initial_state, transition='e', end=element1.q0)
                 transition2 = Transition(start=initial_state, transition='e', end=element2.q0)
@@ -91,8 +99,8 @@ def thompson_alg(postfix):
 
             if (c == '*'):
                 element = stack.pop()
-                initial_state = 'q' + str(counter)
-                final_state = 'q' + str(counter+1)
+                initial_state = str(counter)
+                final_state = str(counter+1)
                 counter+=2
                 transition1 = Transition(start=initial_state, transition='e', end=element.q0)
                 transition2 = Transition(start=element.f, transition='e', end=final_state)
@@ -117,6 +125,7 @@ def thompson_alg(postfix):
     for state in last.q: 
         print(state + ', ') 
 
+    last.alphabet = unique(last.alphabet)
     for char in last.alphabet:
         print(char + ', ')    
     
@@ -129,42 +138,7 @@ def thompson_alg(postfix):
     return (last)
 
 
-def graphicAFN(afn):
-    f = Digraph('finite_state_machine', filename='afn.gv')
-    f.attr(rankdir='LR', size='8,5')
-    f.attr('node', shape='doublecircle')
-    f.node(afn.q0)
-    f.node(afn.f)
 
-    f.attr('node', shape='circle')
-    for transition in afn.transitions:
-        f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
-    f.view()
-
-def generateTXT(afn):
-    f = open('afn.txt', 'w+')
-    f.write("Estados = {")
-    for state in afn.q: 
-        f.write(state + ',') 
-    f.write("}")
-    f.write('\n')
-
-    f.write("Simbolos = {")
-    for char in afn.alphabet:
-        f.write(char + ',')
-    f.write("}")    
-    f.write('\n')
-    
-    f.write("Inicio: " + afn.q0) 
-    f.write('\n')
-
-    f.write("Aceptacion: " + afn.f) 
-    f.write('\n') 
-
-    f.write("Transiciones: ")
-    f.write('\n')
-    for transition in afn.transitions:
-        f.write('('+transition.start+', '+transition.transition+', '+transition.end+'), ') 
 
 
 
