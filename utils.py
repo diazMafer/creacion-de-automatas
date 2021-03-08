@@ -6,9 +6,9 @@ from subsets import *
 
 def precedence(op):
     if op == '|':
-        return 3
-    if op == '.':
         return 1
+    if op == '.':
+        return 2
     if op == '*':
         return 3
     return 0

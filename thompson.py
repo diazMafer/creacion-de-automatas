@@ -39,6 +39,7 @@ def thompson_alg(postfix):
             transitions = [transition]
             element = StackElement(q=states, expression=c, alphabet=[c], q0=state1, f=state2, transitions=transitions)
             stack.append(element)
+            print("entre en normal")
 
         else:
             if (c == '|'):
@@ -65,6 +66,8 @@ def thompson_alg(postfix):
 
                 element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
+                print("entre en |")
+
 
             if (c == '.'):
                 element2=stack.pop()
@@ -96,6 +99,7 @@ def thompson_alg(postfix):
 
                 element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=element1.q0, f=element2.f, transitions=current_transitions)
                 stack.append(element)
+                print("entre en .")
 
             if (c == '*'):
                 element = stack.pop()
@@ -120,6 +124,7 @@ def thompson_alg(postfix):
 
                 element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
+                print("entre en *")
 
     last = stack.pop()
     for state in last.q: 
