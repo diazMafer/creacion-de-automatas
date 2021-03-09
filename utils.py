@@ -168,29 +168,29 @@ def gen_afn_txt(afn):
         f.write('('+transition.start+', '+transition.transition+', '+transition.end+'), ') 
 
 def gen_afd_txt(afn):
-    f = open('afn.txt', 'w+')
+    f = open('afd.txt', 'w+')
     f.write("Estados = {")
     for state in afn.q: 
-        f.write(state + ',') 
+        f.write(str(state) + ',') 
     f.write("}")
     f.write('\n')
 
     f.write("Simbolos = {")
     for char in afn.alphabet:
-        f.write(char + ',')
+        f.write(str(char) + ',')
     f.write("}")    
     f.write('\n')
     
-    f.write("Inicio: " + afn.q0) 
+    f.write("Inicio: " + str(afn.q0)) 
     f.write('\n')
 
-    f.write("Aceptacion: " + afn.f) 
+    f.write("Aceptacion: " + str(afn.f)) 
     f.write('\n') 
 
     f.write("Transiciones: ")
     f.write('\n')
     for transition in afn.transitions:
-        f.write('('+transition.start+', '+transition.transition+', '+transition.end+'), ') 
+        f.write('('+str(transition.start)+', '+str(transition.transition)+', '+str(transition.end)+'), ') 
 
 
 expression = input('Enter infix expression')

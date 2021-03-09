@@ -99,23 +99,23 @@ def dfa_nfa(afn):
             u = eclosure(move(dfa_state[i],n,afn.transitions),afn.transitions)
             transition = Transition(start=dfa_state[i], transition=n, end=u)
             transitions_dfa.append(transition)
-            table.append(transition)
+            if (transition.start != set() and transition.end != set()):
+                table.append(transition)
             for w in afn_pstates:
                 if w[1] in u:
                     infin_nuevo.append(u)
-            if u not in dfa_state and u is not None:
+            if u not in dfa_state and u is not None and u != set():
                 dfa_state.append(u)         
         i+=1
     
     
+
     print("Proceso de cambio de NFA a DFA")
     
     print("--------------------------------------------------------------------------------------")
-    for transition in transitions_dfa:
+    for transition in table:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
     
-    print("--------------------------------------------------------------------------------------")
-
     
     # assign a letter to each subset generated
     dfa_alphabet_nodes =["A","B","C","D","E","F","G","H","I","J"]
@@ -128,13 +128,12 @@ def dfa_nfa(afn):
         transition.set_end(end=n)
     
     
-    print(dfa_state)
-    for transition in transitions_dfa:
+    for transition in table:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
     print(infin_nuevo)
 
     x = 0
-    #cambiamos el estado final y el inicial 
+    
     while x < len(infin_nuevo):
         indice1 = dfa_state.index(infin_nuevo[x])
         infin_nuevo[x]= dfa_alphabet_nodes[indice1]
