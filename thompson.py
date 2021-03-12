@@ -1,20 +1,7 @@
 from graphviz import Digraph
 import re
-
-class Transition:
-    def __init__(self, start, transition, end):
-        self.start = start
-        self.transition = transition
-        self.end = end
-
-class StackElement:
-    def __init__(self, q, expression, alphabet, q0, f, transitions):
-        self.q = q
-        self.expression = expression
-        self.alphabet = alphabet
-        self.q0 = q0
-        self.f=f
-        self.transitions = transitions
+from transition import *
+from automata import *
 
 #method from https://www.geeksforgeeks.org/python-get-unique-values-list/
 def unique(alphabet):
@@ -27,7 +14,6 @@ def unique(alphabet):
 def thompson_alg(postfix):
     stack = []
     counter = 0
-    char_counter = 0
 
     for c in postfix:
         if (c != '(') and (c != ')')  and (c != '*') and (c != '|') and (c != '.'):
@@ -37,7 +23,7 @@ def thompson_alg(postfix):
             counter+=2
             transition = Transition(start=state1, transition=c, end=state2)
             transitions = [transition]
-            element = StackElement(q=states, expression=c, alphabet=[c], q0=state1, f=state2, transitions=transitions)
+            element = Automata(q=states, expression=c, alphabet=[c], q0=state1, f=state2, transitions=transitions)
             stack.append(element)
             print("entre en normal")
 
@@ -64,7 +50,7 @@ def thompson_alg(postfix):
                 current_expression = '(' + element1.expression + '|' + element2.expression + ')'
                 current_alphabet = element1.alphabet + element2.alphabet
 
-                element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
+                element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
                 print("entre en |")
 
@@ -97,7 +83,7 @@ def thompson_alg(postfix):
                 current_expression = '(' + element1.expression + '.' + element2.expression + ')'
                 current_alphabet = element1.alphabet + element2.alphabet        
 
-                element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=element1.q0, f=element2.f, transitions=current_transitions)
+                element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=element1.q0, f=element2.f, transitions=current_transitions)
                 stack.append(element)
                 print("entre en .")
 
@@ -122,7 +108,7 @@ def thompson_alg(postfix):
                 current_expression = '(' + element.expression + ')*'
                 current_alphabet = element.alphabet
 
-                element = StackElement(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
+                element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
                 print("entre en *")
 

@@ -2,6 +2,9 @@
 from thompson import *
 import re
 from subsets import *
+import direct 
+from direct import *
+import tree 
 
 
 def precedence(op):
@@ -41,58 +44,22 @@ def expand(expression):
 def parseExp(expression):
     new = []
     stack = []
-    counter = 0
     for character in expression:
         if character != "?" and character != "+":
             new.append(character)
-        if character == "?" or character == "+":
-            counter +=1
-            if (character == "?" and new[-1] != ")") or (character == "+" and new[-1] != ")"):
-                counter +=1
-                x = True
-                z = len(new)-1
-                while x == True and z != -1:
-                    if new[z] == ")" or new[z] == ".":
-                        new.pop()
-                        x = False
-                    else:
-                        stack.append(new[z])
-                        new.pop()
-                    z-=1
-                if character == "?":
-                    counter +=1
-                    new.append(str("("+''.join(stack[::-1])+"|e)"))
-                elif character == "+":
-                    counter +=1
-                    new.append(str("("+''.join(stack[::-1])+").("+''.join(stack[::-1])+"*)"))
-                stack = []
-            else: 
-                v = len(new)-1
-                z = True
-                while z == True:
-                    if new[v] == "(" :
-                        stack.append("(")
-                        new.pop()
-                        z = False
-                    else:
-                        stack.append(new[v])
-                        new.pop()
-                    v-=1
-                if character == "?":
-                    counter +=1                    
-                    new.append(str("("+''.join(stack[::-1])+"|e)"))
-                elif character == "+":
-                    counter +=1            
-                    new.append(str("("+''.join(stack[::-1])+").("+''.join(stack[::-1])+"*"))
-                stack = []
+            stack.append(character)
+        elif character == "?":
+            x = stack.pop()
+            new.pop()
+            new.append(str("("+x+"|e)"))
+            stack = []
+        elif character == "+":
+            x = stack.pop()
+            new.append(str("("+x+"*)"))
     
     print(new)
-    i = 0
-    final = list(new)
-    if final[0] == ".":
-        final.pop(0)
     
-    return ''.join(final)
+    return ''.join(new)
                     
 def evaluate(expression):
     stack = []
@@ -134,7 +101,6 @@ def graphicAFD(afn):
     f = Digraph('finite_state_machine', filename='afd.gv')
     f.attr(rankdir='LR', size='8,5')
     f.attr('node', shape='doublecircle')
-    f.node(afn.q0)
     f.node(afn.f)
 
     f.attr('node', shape='circle')
@@ -193,20 +159,50 @@ def gen_afd_txt(afn):
         f.write('('+str(transition.start)+', '+str(transition.transition)+', '+str(transition.end)+'), ') 
 
 
+def graph(automata, nombre):
+    dot = Digraph(name = "Automata")
+    dot.attr(rankdir = "LR")
+    for state in automata.states:
+        if state.accept:
+            dot.node(str(state.id2), str(state.id2), shape = "doublecircle")
+        else:
+            dot.node(str(state.id2), str(state.id2))
+        for transition in state.transitions:
+            dot.edge(str(state.id2),str(transition.to), transition.symbol)
+    print(dot.source)
+    dot.render('test-output/' + nombre + '.gv', view=True)
+
+def graphicDirect(afn):
+    f = Digraph('finite_state_machine', filename='afd_direct.gv')
+    f.attr(rankdir='LR', size='8,5')
+
+    f.attr('node', shape='circle')
+    for transition in afn:
+        f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
+    f.view()
+
 expression = input('Enter infix expression')
 print('infix expression: ',expression)
-expanded = expand(expression)
-print('expanded version: ', expanded)
-converted = parseExp(expanded)
+
+converted = parseExp(expression)
 print('converted expression: ', converted)
-postfix = evaluate(converted)
+expanded = expand(converted)
+print('expanded version: ', expanded)
+postfix = evaluate(expanded)
 print('postfix expression: ', postfix)
-afn = thompson_alg(postfix)
+
+""" afn = thompson_alg(postfix)
 graphicAFN(afn)
 gen_afn_txt(afn)
-dfa = dfa_nfa(afn)
+dfa = subsets(afn)
 graphicAFD(dfa)
 gen_afd_txt(dfa)
+
+print("directo")
+tree = tree.evaluate(converted)
+transitions = direct.directo(tree, converted)
+graphicDirect(transitions) """
+
 
 
 

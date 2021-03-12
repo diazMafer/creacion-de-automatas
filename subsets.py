@@ -1,23 +1,5 @@
-class Transition:
-    def __init__(self, start, transition, end):
-        self.start = start
-        self.transition = transition
-        self.end = end
-    
-    def set_start(self, start):
-        self.start = start
-    
-    def set_end(self, end):
-        self.end = end
-
-class StackElement:
-    def __init__(self, q, expression, alphabet, q0, f, transitions):
-        self.q = q
-        self.expression = expression
-        self.alphabet = alphabet
-        self.q0 = q0
-        self.f = f
-        self.transitions = transitions
+from transition import *
+from automata import *
 
 def eclosure(step, transitions):
     if isinstance(step, int):
@@ -82,8 +64,10 @@ subset algorithm to convert nfa to dfa requires eclosure function and a function
 the possibles moves
 """
 
-def dfa_nfa(afn):
+def subsets(afn):
     alphabet = afn.alphabet
+    alphabet.remove('e')
+    print(alphabet)
     afn_pstates = [[int(afn.q0), int(afn.f)]]
                    
     i = 0
@@ -112,7 +96,6 @@ def dfa_nfa(afn):
 
     print("Proceso de cambio de NFA a DFA")
     
-    print("--------------------------------------------------------------------------------------")
     for transition in table:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
     
@@ -139,5 +122,5 @@ def dfa_nfa(afn):
         infin_nuevo[x]= dfa_alphabet_nodes[indice1]
         x+=1
    
-    dfa = StackElement(dfa_state, afn.expression, alphabet, infin_nuevo[0], infin_nuevo[1], table)
+    dfa = Automata(dfa_state, afn.expression, alphabet, infin_nuevo[0], infin_nuevo[1], table)
     return dfa
