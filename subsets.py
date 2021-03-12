@@ -64,9 +64,11 @@ subset algorithm to convert nfa to dfa requires eclosure function and a function
 the possibles moves
 """
 
-def subsets(afn):
+def subsets_alg(afn):
     alphabet = afn.alphabet
-    alphabet.remove('e')
+    for character in alphabet:
+        if character == "e":
+            alphabet.remove('e')
     print(alphabet)
     afn_pstates = [[int(afn.q0), int(afn.f)]]
                    
@@ -74,8 +76,8 @@ def subsets(afn):
     dfa_state =[]
     table = []
     dfa_state.append(eclosure(int(afn.q0), afn.transitions))
-    infin_nuevo =[]
-    infin_nuevo.append(eclosure(int(afn.q0), afn.transitions))
+    terminal_states =[]
+    terminal_states.append(eclosure(int(afn.q0), afn.transitions))
     transitions_dfa = []
     
     while i < len(dfa_state):
@@ -87,7 +89,7 @@ def subsets(afn):
                 table.append(transition)
             for w in afn_pstates:
                 if w[1] in u:
-                    infin_nuevo.append(u)
+                    terminal_states.append(u)
             if u not in dfa_state and u is not None and u != set():
                 dfa_state.append(u)         
         i+=1
@@ -113,14 +115,33 @@ def subsets(afn):
     
     for transition in table:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
-    print(infin_nuevo)
+    print(terminal_states)
 
     x = 0
     
-    while x < len(infin_nuevo):
-        indice1 = dfa_state.index(infin_nuevo[x])
-        infin_nuevo[x]= dfa_alphabet_nodes[indice1]
+    while x < len(terminal_states):
+        indice1 = dfa_state.index(terminal_states[x])
+        terminal_states[x]= dfa_alphabet_nodes[indice1]
         x+=1
    
-    dfa = Automata(dfa_state, afn.expression, alphabet, infin_nuevo[0], infin_nuevo[1], table)
+    dfa = Automata(dfa_state, afn.expression, alphabet, terminal_states[0], terminal_states[1], table)
     return dfa
+
+def simulation(expression, transitions, terminals):
+    i = 0
+    inicial = terminals[0][0]
+    
+    for character in expression:
+        x = move(inicial, character, transitions)
+        if len(x)==0:
+            return "NO"
+        x = list(x)
+        inicial = x[0]
+    i = 0 
+    for n in range(len(terminals)):
+        if inicial == terminals[n][1]:
+            i += 1
+    if i !=0:
+        return "YES"
+    else:
+        return "NO"

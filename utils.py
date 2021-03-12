@@ -1,9 +1,8 @@
 
 from thompson import *
 import re
-from subsets import *
-import direct 
-from direct import *
+from subsets import subsets_alg
+from direct import directo
 import tree 
 
 
@@ -159,19 +158,6 @@ def gen_afd_txt(afn):
         f.write('('+str(transition.start)+', '+str(transition.transition)+', '+str(transition.end)+'), ') 
 
 
-def graph(automata, nombre):
-    dot = Digraph(name = "Automata")
-    dot.attr(rankdir = "LR")
-    for state in automata.states:
-        if state.accept:
-            dot.node(str(state.id2), str(state.id2), shape = "doublecircle")
-        else:
-            dot.node(str(state.id2), str(state.id2))
-        for transition in state.transitions:
-            dot.edge(str(state.id2),str(transition.to), transition.symbol)
-    print(dot.source)
-    dot.render('test-output/' + nombre + '.gv', view=True)
-
 def graphicDirect(afn):
     f = Digraph('finite_state_machine', filename='afd_direct.gv')
     f.attr(rankdir='LR', size='8,5')
@@ -181,27 +167,7 @@ def graphicDirect(afn):
         f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
     f.view()
 
-expression = input('Enter infix expression')
-print('infix expression: ',expression)
 
-converted = parseExp(expression)
-print('converted expression: ', converted)
-expanded = expand(converted)
-print('expanded version: ', expanded)
-postfix = evaluate(expanded)
-print('postfix expression: ', postfix)
-
-""" afn = thompson_alg(postfix)
-graphicAFN(afn)
-gen_afn_txt(afn)
-dfa = subsets(afn)
-graphicAFD(dfa)
-gen_afd_txt(dfa)
-
-print("directo")
-tree = tree.evaluate(converted)
-transitions = direct.directo(tree, converted)
-graphicDirect(transitions) """
 
 
 

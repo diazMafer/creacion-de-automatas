@@ -1,0 +1,6 @@
+Estados = {{0, 1, 2, 4, 5, 6, 9, 10, 11},{0, 1, 2, 4, 5, 6, 7, 9, 11},{0, 1, 2, 3, 4, 5, 6, 9, 11},}
+Simbolos = {1,0,}
+Inicio: A
+Aceptacion: B
+Transiciones: 
+(A, 1, B), (A, 0, C), (B, 1, B), (B, 0, C), (C, 1, B), (C, 0, C), 

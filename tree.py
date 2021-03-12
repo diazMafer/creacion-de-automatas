@@ -4,7 +4,7 @@ class Tree(object):
         self.right = None
         self.symbol = None
 
-def evaluate(expression):
+def generate_tree(expression):
     operators = ['.', '|', '*', '(', ')']
     output = []
     stack = []

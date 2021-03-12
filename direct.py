@@ -1,6 +1,6 @@
 from tree import *
 from transition import *
-from automata import *
+from automata import State
 import collections
 
 
@@ -161,6 +161,8 @@ def create(inicial, final, table, exp):
     for symbol in exp:
         if symbol not in OPERATORS and symbol not in symbols and symbol != "e":
             symbols.append(symbol)
+    
+    print(symbols)
     
     for state in dfa_states:
         for symbol in symbols:
