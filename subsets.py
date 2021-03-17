@@ -29,8 +29,8 @@ def move(nodes, symbol, transitions):
         for n in range(len(nodes)):
             posible_moves = possible_movements(nodes[n], symbol, transitions)
             for move in posible_moves:
-                if int(move.end) not in moves:
-                    moves.append(int(move.end))
+                if str(move.end) not in moves:
+                    moves.append(str(move.end))
         s = set()
         for item in moves:
             s.add(item)
@@ -39,8 +39,8 @@ def move(nodes, symbol, transitions):
     else:
         posible_moves = possible_movements(nodes, symbol, transitions)
         for move in posible_moves:
-            if int(move.end) not in moves:
-                moves.append(int(move.end))
+            if str(move.end) not in moves:
+                moves.append(str(move.end))
                  
         s = set()
         for item in moves:
@@ -54,7 +54,7 @@ def move(nodes, symbol, transitions):
 def possible_movements(node, symbols, transitions):
     moves = []
     for transition in transitions:
-        if int(transition.start) == node and str(transition.transition) == str(symbols):
+        if str(transition.start) == str(node) and str(transition.transition) == str(symbols):
             moves.append(transition) 
     return moves
 
@@ -129,25 +129,29 @@ def subsets_alg(afn):
         indice1 = dfa_state.index(terminal_states[x])
         terminal_states[x]= dfa_alphabet_nodes[indice1]
         x+=1
-   
-    dfa = Automata(dfa_state, afn.expression, alphabet, terminal_states[0], terminal_states[1], table)
+    
+    acceptance_states = []
+    for i in range(1, len(terminal_states)):
+        acceptance_states.append(terminal_states[i])
+
+    dfa = Automata(dfa_state, afn.expression, alphabet, terminal_states[0], acceptance_states, table)
     return dfa
 
-def simulation(expression, transitions, terminals):
+def simulationAFD(expression, transitions, inicial_node, acceptance_states):
     i = 0
-    inicial = terminals[0][0]
+    inicial = inicial_node
     
     for character in expression:
         x = move(inicial, character, transitions)
         if len(x)==0:
-            return "NO"
+            return "No"
         x = list(x)
         inicial = x[0]
     i = 0 
-    for n in range(len(terminals)):
-        if inicial == terminals[n][1]:
+    for n in range(len(acceptance_states)):
+        if inicial == acceptance_states[n]:
             i += 1
     if i !=0:
-        return "YES"
+        return "Yes"
     else:
-        return "NO"
+        return "No"

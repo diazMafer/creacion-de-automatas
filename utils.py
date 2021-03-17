@@ -100,7 +100,8 @@ def graphicAFD(afn):
     f = Digraph('finite_state_machine', filename='afd.gv')
     f.attr(rankdir='LR', size='8,5')
     f.attr('node', shape='doublecircle')
-    f.node(afn.f)
+    for node in afn.f:
+        f.node(node)
 
     f.attr('node', shape='circle')
     for transition in afn.transitions:
