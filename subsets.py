@@ -82,7 +82,13 @@ def subsets_alg(afn):
     
     while i < len(dfa_state):
         for n in alphabet:
+            print("evaluating symbol " + n)
+            print("evaluating state " + str(dfa_state[i]))
+            print("Resulting Move: ")
+            print(move(dfa_state[i],n,afn.transitions))
             u = eclosure(move(dfa_state[i],n,afn.transitions),afn.transitions)
+            print("Resulting E closure")
+            print(u)
             transition = Transition(start=dfa_state[i], transition=n, end=u)
             transitions_dfa.append(transition)
             if (transition.start != set() and transition.end != set()):

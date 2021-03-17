@@ -145,6 +145,25 @@ def directo(tree, exp):
     followpos(new_tree, table)
     inicial = first_pos(new_tree)
     final = last_pos(new_tree)
+    print("First pos for directed")
+    print("[")
+    for tree in inicial: 
+        print(str(tree.symbol) + ',') 
+    print("]")
+
+    print("Last pos for directed")
+    for tree in final:
+        print(str(tree.symbol) + "," )
+    print("Table generated for direct method")
+    for key in table:
+        x = "["
+        key_string = str(key.symbol)
+        for tree in table[key]:
+            y = (str(tree.symbol) + ",")
+            x += y
+        x += "]"
+        print(key_string, ":", x)
+
     auto_direct = create(inicial, final, table, exp)
 
     return auto_direct
@@ -162,6 +181,7 @@ def create(inicial, final, table, exp):
         if symbol not in OPERATORS and symbol not in symbols and symbol != "e":
             symbols.append(symbol)
     
+    print("Alphabet for directed")
     print(symbols)
     
     for state in dfa_states:
@@ -174,8 +194,10 @@ def create(inicial, final, table, exp):
                         if t not in temp:
                             temp.append(t)
             if check(dfa_states, temp) and temp != []:
+                print("creating new state and new transition of dfa")
                 new_state = State(temp, len(dfa_states))
-                
+                print("State generated")
+                print(new_state.q0, new_state.f)
                 #if final[-1] in temp:
                  #   aceptacion
                 dfa_states.append(new_state)
@@ -184,10 +206,11 @@ def create(inicial, final, table, exp):
             elif temp != []:
                 selected = select(dfa_states, temp)
                 if selected:
+                    print("just adding a new transition to dfa")
                     transition2 = Transition(start=state.f, transition=symbol, end=selected.f)
                     dfa_transitions.append(transition2)
     
-    print("--------------------------------------------------------------------------------------")
+    print("Transitions of dfa generated")
     for transition in dfa_transitions:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
     return dfa_transitions
