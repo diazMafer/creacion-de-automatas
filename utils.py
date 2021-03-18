@@ -5,7 +5,6 @@ from subsets import subsets_alg
 from direct import directo
 import tree 
 
-
 def precedence(op):
     if op == '|':
         return 1
@@ -167,6 +166,57 @@ def graphicDirect(afn):
     for transition in afn:
         f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
     f.view()
+
+def simulation(expression, transitions, inicial_node, acceptance_states):
+    i = 0
+    inicial = inicial_node
+    
+    for character in expression:
+        x = move(inicial, character, transitions)
+        if len(x)==0:
+            return "No"
+        x = list(x)
+        inicial = x[0]
+    i = 0 
+    for n in range(len(acceptance_states)):
+        if inicial == acceptance_states[n]:
+            i += 1
+    if i !=0:
+        return "Yes"
+    else:
+        return "No"
+
+def simulationAFN(afn, expresion):
+    if expresion == " ":
+        expresion = "e"
+    actual = [afn.q0]
+    actual = cerradura(afn, actual)
+    i = 0
+    while True:
+        temp = []
+        for node in actual:
+            for transition in afn.transitions:
+                if transition.transition == expresion[i] and transition.end not in temp:
+                    temp.append(transition.end)
+        i += 1
+        temp = cerradura(afn, temp)
+        if not temp and expresion == "e":
+            break
+        actual = temp.copy()
+        if i > len(expresion)-1:
+            break
+    for x in actual:
+        if x == afn.f:
+            return True
+    return False
+    
+# encontrar transiciones epsilon en afn
+def cerradura(afn, actual):
+    for x in actual:
+        for transition in afn.transitions:
+            if transition.transition == "e" and transition.end not in actual:
+                actual.append(transition.end)
+    return actual
 
 
 

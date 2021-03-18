@@ -1,6 +1,6 @@
 from thompson import *
 import re
-from subsets import subsets_alg, simulationAFD
+from subsets import subsets_alg
 from direct import directo
 from tree import generate_tree
 from utils import *
@@ -31,6 +31,9 @@ while ans:
         afn = thompson_alg(postfix)
         graphicAFN(afn)
         gen_afn_txt(afn)
+
+        exp_evaluate = input('Enter expression to evaluate ')
+        print(simulationAFN (afn, exp_evaluate))
     elif ans=="2":
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')
@@ -51,7 +54,7 @@ while ans:
         graphicAFD(dfa)
         gen_afd_txt(dfa)
         exp_evaluate = input('Enter expression to evaluate ')
-        print(simulationAFD(exp_evaluate, dfa.transitions, dfa.q0, dfa.f))
+        print(simulation(exp_evaluate, dfa.transitions, dfa.q0, dfa.f))
 
     elif ans=="3":
         expression = input('Enter infix expression')

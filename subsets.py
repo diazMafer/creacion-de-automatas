@@ -137,21 +137,3 @@ def subsets_alg(afn):
     dfa = Automata(dfa_state, afn.expression, alphabet, terminal_states[0], acceptance_states, table)
     return dfa
 
-def simulationAFD(expression, transitions, inicial_node, acceptance_states):
-    i = 0
-    inicial = inicial_node
-    
-    for character in expression:
-        x = move(inicial, character, transitions)
-        if len(x)==0:
-            return "No"
-        x = list(x)
-        inicial = x[0]
-    i = 0 
-    for n in range(len(acceptance_states)):
-        if inicial == acceptance_states[n]:
-            i += 1
-    if i !=0:
-        return "Yes"
-    else:
-        return "No"
