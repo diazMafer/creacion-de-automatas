@@ -101,7 +101,6 @@ def subsets_alg(afn):
         i+=1
     
     
-
     print("Proceso de cambio de NFA a DFA")
     
     for transition in table:
@@ -121,10 +120,12 @@ def subsets_alg(afn):
     
     for transition in table:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
-    print(terminal_states)
 
     x = 0
     
+    if len(terminal_states) <= 1:
+        terminal_states.append(dfa_state[-1])
+
     while x < len(terminal_states):
         indice1 = dfa_state.index(terminal_states[x])
         terminal_states[x]= dfa_alphabet_nodes[indice1]

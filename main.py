@@ -20,79 +20,91 @@ while ans:
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')
         print('infix expression: ',expression)
+        balanced = check(expression)
+       
+        if balanced != False:
+            converted = parseExp(expression)
+            print('converted expression: ', converted)
+            expanded = expand(converted)
+            print('expanded version: ', expanded)
+            postfix = evaluate(expanded)
+            print('postfix expression: ', postfix)
+            afn = thompson_alg(postfix)
+            graphicAFN(afn)
+            gen_afn_txt(afn)
+            exp_evaluate = input('Enter expression to evaluate ')
+            print(simulationAFN (afn, exp_evaluate))
+        else:
+            print("Expression has an error")
 
-        converted = parseExp(expression)
-        print('converted expression: ', converted)
-        expanded = expand(converted)
-        print('expanded version: ', expanded)
-        postfix = evaluate(expanded)
-        print('postfix expression: ', postfix)
-
-        afn = thompson_alg(postfix)
-        graphicAFN(afn)
-        gen_afn_txt(afn)
-
-        exp_evaluate = input('Enter expression to evaluate ')
-        print(simulationAFN (afn, exp_evaluate))
     elif ans=="2":
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')
 
         print('infix expression: ',expression)
+        balanced = check(expression)
 
-        converted = parseExp(expression)
-        print('converted expression: ', converted)
-        expanded = expand(converted)
-        print('expanded version: ', expanded)
-        postfix = evaluate(expanded)
-        print('postfix expression: ', postfix)
-
-        afn = thompson_alg(postfix)
-        graphicAFN(afn)
-        gen_afn_txt(afn)
-        dfa = subsets_alg(afn)
-        graphicAFD(dfa)
-        gen_afd_txt(dfa)
-        exp_evaluate = input('Enter expression to evaluate ')
-        print(simulation(exp_evaluate, dfa.transitions, dfa.q0, dfa.f))
+        if balanced != False:
+            converted = parseExp(expression)
+            print('converted expression: ', converted)
+            expanded = expand(converted)
+            print('expanded version: ', expanded)
+            postfix = evaluate(expanded)
+            print('postfix expression: ', postfix)
+            afn = thompson_alg(postfix)
+            graphicAFN(afn)
+            gen_afn_txt(afn)
+            dfa = subsets_alg(afn)
+            graphicAFD(dfa)
+            gen_afd_txt(dfa)
+            exp_evaluate = input('Enter expression to evaluate ')
+            print(simulation(exp_evaluate, dfa.transitions, dfa.q0, dfa.f))
+        else:
+            print("Expression has an error")
 
     elif ans=="3":
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')
-
         print('infix expression: ',expression)
+        balanced = check(expression)
 
-        converted = parseExp(expression)
-        print('converted expression: ', converted)
-        expanded = expand(converted)
-        print('expanded version: ', expanded)
-        tree = generate_tree(expanded)
-        afd_direct = directo(tree, expanded)
-        graphicDirect(afd_direct)
+        if balanced:
+            converted = parseExp(expression)
+            print('converted expression: ', converted)
+            expanded = expand(converted)
+            print('expanded version: ', expanded)
+            tree = generate_tree(expanded)
+            afd_direct = directo(tree, expanded)
+            graphicDirect(afd_direct)
+        else:
+            print("Expression has an error")
+
     elif ans=="4":
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')
-
         print('infix expression: ',expression)
+        balanced = check(expression)
+        
+        if balanced != False:
+            converted = parseExp(expression)
+            print('converted expression: ', converted)
+            expanded = expand(converted)
+            print('expanded version: ', expanded)
+            postfix = evaluate(expanded)
+            print('postfix expression: ', postfix)
+            afn = thompson_alg(postfix)
+            graphicAFN(afn)
+            gen_afn_txt(afn)
+            dfa = subsets_alg(afn)
+            graphicAFD(dfa)
+            gen_afd_txt(dfa)
+            print("directo")
+            tree = generate_tree(expanded)
+            transitions = directo(tree, expanded)
+            graphicDirect(transitions)
+        else:
+            print("Expression has an error")
 
-        converted = parseExp(expression)
-        print('converted expression: ', converted)
-        expanded = expand(converted)
-        print('expanded version: ', expanded)
-        postfix = evaluate(expanded)
-        print('postfix expression: ', postfix)
-
-        afn = thompson_alg(postfix)
-        graphicAFN(afn)
-        gen_afn_txt(afn)
-        dfa = subsets_alg(afn)
-        graphicAFD(dfa)
-        gen_afd_txt(dfa)
-
-        print("directo")
-        tree = generate_tree(expanded)
-        transitions = directo(tree, expanded)
-        graphicDirect(transitions)
     elif ans=="5":
         exit()
     elif ans !="":

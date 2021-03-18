@@ -1,9 +1,7 @@
 
-from thompson import *
 import re
+from graphviz import Digraph
 from subsets import move
-from direct import directo
-import tree 
 
 def precedence(op):
     if op == '|':
@@ -24,7 +22,6 @@ def expand(expression):
             if counter == 1 :
                 r = r + "." 
                 counter = 0
-                print("entre1")
         elif character == ")" or character == "*" or character == ".":
             pass
         else:
@@ -53,7 +50,16 @@ def parseExp(expression):
             stack = []
         elif character == "+":
             x = stack.pop()
-            new.append(str("("+x+"*)"))
+            if x == ")":
+                y = stack.pop()
+                op = stack.pop()
+                v = stack.pop()
+                p = stack.pop()
+                final = p + v + op + y + x
+                new.append(str(final+"*"))
+            else:
+                new.append(str("("+x+"*)"))
+
     
     print(new)
     
@@ -63,7 +69,6 @@ def evaluate(expression):
     stack = []
     output = []
     operators = ['.', '|', '*', '(', ')']
-
     for character in expression:
         if character not in operators: 
             output.append(character)
@@ -80,8 +85,31 @@ def evaluate(expression):
     
     while stack:
         output.append(stack.pop())
-    
+
     return output
+
+
+# balanced parentheses in an expression 
+# took from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-python/  
+# Function to check parentheses 
+def check(myStr): 
+    open_list = ["[","{","("] 
+    close_list = ["]","}",")"] 
+    stack = [] 
+    for i in myStr: 
+        if i in open_list: 
+            stack.append(i) 
+        elif i in close_list: 
+            pos = close_list.index(i) 
+            if ((len(stack) > 0) and
+                (open_list[pos] == stack[len(stack)-1])): 
+                stack.pop() 
+            else: 
+                return False
+    if len(stack) == 0: 
+        return True
+    else: 
+        return False
 
 def graphicAFN(afn):
     f = Digraph('finite_state_machine', filename='afn.gv')

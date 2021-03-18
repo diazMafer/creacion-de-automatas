@@ -1,4 +1,3 @@
-from graphviz import Digraph
 import re
 from transition import *
 from automata import *
@@ -25,7 +24,6 @@ def thompson_alg(postfix):
             transitions = [transition]
             element = Automata(q=states, expression=c, alphabet=[c], q0=state1, f=state2, transitions=transitions)
             stack.append(element)
-            print("entre en normal")
 
         else:
             if (c == '|'):
@@ -52,7 +50,6 @@ def thompson_alg(postfix):
 
                 element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
-                print("entre en |")
 
 
             if (c == '.'):
@@ -85,7 +82,6 @@ def thompson_alg(postfix):
 
                 element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=element1.q0, f=element2.f, transitions=current_transitions)
                 stack.append(element)
-                print("entre en .")
 
             if (c == '*'):
                 element = stack.pop()
@@ -110,7 +106,6 @@ def thompson_alg(postfix):
 
                 element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
-                print("entre en *")
 
     last = stack.pop()
     for state in last.q: 
@@ -119,10 +114,6 @@ def thompson_alg(postfix):
     last.alphabet = unique(last.alphabet)
     for char in last.alphabet:
         print(char + ', ')    
-    
-    print(last.q0) 
-
-    print(last.f) 
 
     for transition in last.transitions:
         print('('+transition.start+', '+transition.transition+', '+transition.end+'), ') 
