@@ -1,6 +1,6 @@
 from tree import *
 from transition import *
-from automata import State
+from automata import *
 import collections
 
 
@@ -173,8 +173,9 @@ def create(inicial, final, table, exp):
     dfa_transitions = []
     dfa_states = [] 
     dfa_states.append(first)
-    #if final[-1] in first.q0:
-     #   aceptacion
+    acceptance_states = []
+    if final[-1] in first.q0:
+        acceptance_states.append(first.f)
 
     symbols = []
     for symbol in exp:
@@ -198,8 +199,10 @@ def create(inicial, final, table, exp):
                 new_state = State(temp, len(dfa_states))
                 print("State generated")
                 print(new_state.q0, new_state.f)
-                #if final[-1] in temp:
-                 #   aceptacion
+                if final[-1] in temp:
+                    print(new_state.f)
+                    acceptance_states.append(new_state.f)
+                 
                 dfa_states.append(new_state)
                 transition1 = Transition(start=state.f,transition=symbol,end=dfa_states[-1].f)
                 dfa_transitions.append(transition1)
@@ -213,6 +216,9 @@ def create(inicial, final, table, exp):
     print("Transitions of dfa generated")
     for transition in dfa_transitions:
         print('('+str(transition.start)+', '+transition.transition+', '+str(transition.end)+'), ') 
-    return dfa_transitions
+    
+    print(acceptance_states)
+    afd_direct = Automata(dfa_states,"eval",symbols,None,acceptance_states,dfa_transitions)
+    return afd_direct
 
 

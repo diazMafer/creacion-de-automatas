@@ -67,8 +67,8 @@ while ans:
         expanded = expand(converted)
         print('expanded version: ', expanded)
         tree = generate_tree(expanded)
-        transitions = directo(tree, expanded)
-        graphicDirect(transitions)
+        afd_direct = directo(tree, expanded)
+        graphicDirect(afd_direct)
     elif ans=="4":
         expression = input('Enter infix expression')
         expression = expression.replace('ε','e')

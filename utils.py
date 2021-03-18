@@ -1,7 +1,7 @@
 
 from thompson import *
 import re
-from subsets import subsets_alg
+from subsets import move
 from direct import directo
 import tree 
 
@@ -161,9 +161,12 @@ def gen_afd_txt(afn):
 def graphicDirect(afn):
     f = Digraph('finite_state_machine', filename='afd_direct.gv')
     f.attr(rankdir='LR', size='8,5')
+    f.attr('node', shape='doublecircle')
+    for node in afn.f:
+        f.node(str(node))
 
     f.attr('node', shape='circle')
-    for transition in afn:
+    for transition in afn.transitions:
         f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
     f.view()
 

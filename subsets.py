@@ -109,7 +109,7 @@ def subsets_alg(afn):
     
     
     # assign a letter to each subset generated
-    dfa_alphabet_nodes =["A","B","C","D","E","F","G","H","I","J"]
+    dfa_alphabet_nodes =["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"]
     for transition in table:
         start1 = dfa_state.index(transition.start)
         h = dfa_alphabet_nodes[start1]
