@@ -12,6 +12,12 @@ def precedence(op):
         return 3
     return 0
 
+"""
+    Method to expand the expression, it counts how many a symbol not operator is 
+    together if there are two symbols together it puts a "." in the middle 
+    @author Paul Belches written in C++
+    @param infix expression 
+"""
 def expand(expression):
     r = ""
     counter = 0
@@ -31,11 +37,12 @@ def expand(expression):
             counter = 1
         else:
             r = r + character
-    
     return r
 
-
-#infix expression
+"""
+    Method to substitute ? for |e and a+ for aa*
+    @param infix expression
+"""
 def parseExp(expression):
     new = []
     stack = []
@@ -58,13 +65,14 @@ def parseExp(expression):
                 final = p + v + op + y + x
                 new.append(str(final+"*"))
             else:
-                new.append(str("("+x+"*)"))
-
-    
-    print(new)
-    
+                new.append(str("("+x+"*)"))    
     return ''.join(new)
-                    
+
+"""
+    Method to pass infix expression to postfix
+    @param infix expression 
+    @return postfix expression
+"""                 
 def evaluate(expression):
     stack = []
     output = []
@@ -88,10 +96,11 @@ def evaluate(expression):
 
     return output
 
-
-# balanced parentheses in an expression 
-# took from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-python/  
-# Function to check parentheses 
+"""
+  balanced parentheses in an expression 
+  took from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-python/  
+  Function to check parentheses 
+"""
 def check(myStr): 
     open_list = ["[","{","("] 
     close_list = ["]","}",")"] 
@@ -198,6 +207,10 @@ def graphicDirect(afn):
         f.edge(str(transition.start), str(transition.end), label=str(transition.transition))
     f.view()
 
+"""
+    Method to simulate dfa
+    @param dfa, expression to evaluate
+"""
 def simulation(expression, transitions, inicial_node, acceptance_states):
     i = 0
     inicial = inicial_node
@@ -217,6 +230,10 @@ def simulation(expression, transitions, inicial_node, acceptance_states):
     else:
         return "No"
 
+"""
+    Method to simulate nfa 
+    @param nfa, expression to evaluate
+"""
 def simulationAFN(afn, expresion):
     if expresion == " ":
         expresion = "e"
@@ -241,7 +258,10 @@ def simulationAFN(afn, expresion):
             return True
     return False
     
-# encontrar transiciones epsilon en afn
+"""
+    Method to find epsilon transitions in nfa
+    @param nfa, nodes to evaluate
+"""
 def cerradura(afn, actual):
     for x in actual:
         for transition in afn.transitions:

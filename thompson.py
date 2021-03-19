@@ -10,12 +10,22 @@ def unique(alphabet):
     unique_list = (list(list_set))
     return unique_list
 
+"""
+    Thompson algorithm to generate an nfa, it constructs the nfa with clases of automatas with 
+    initial state, final state, transitions and symbols.
+    @params expression to evaluate in postfix
+    @return nfa 
+"""
+
 def thompson_alg(postfix):
     stack = []
     counter = 0
 
     for c in postfix:
         if (c != '(') and (c != ')')  and (c != '*') and (c != '|') and (c != '.'):
+            #if the character to evaluate is not an operator we make a single transitions 
+            #the transitions consist of two initial states and in the label the symbol we 
+            #are evaluating 
             state1 = str(counter)
             state2 = str(counter+1)
             states = [state1, state2]
@@ -24,9 +34,11 @@ def thompson_alg(postfix):
             transitions = [transition]
             element = Automata(q=states, expression=c, alphabet=[c], q0=state1, f=state2, transitions=transitions)
             stack.append(element)
-
         else:
             if (c == '|'):
+                #if the character to evaluate is the operator or we make the transitions epsilon
+                #with the states of the last two elementos
+
                 element2=stack.pop()
                 element1=stack.pop()
                 initial_state = str(counter)
@@ -53,6 +65,8 @@ def thompson_alg(postfix):
 
 
             if (c == '.'):
+                #if the character to evaluate is the operator . we make the transitions epsilon
+                #with the states of the last two elementos
                 element2=stack.pop()
                 element1=stack.pop()
 
@@ -84,6 +98,8 @@ def thompson_alg(postfix):
                 stack.append(element)
 
             if (c == '*'):
+                #if the character to evaluate is the operator kleen we make the transitions epsilon
+                #with the states of the last two elementos
                 element = stack.pop()
                 initial_state = str(counter)
                 final_state = str(counter+1)
@@ -106,6 +122,8 @@ def thompson_alg(postfix):
 
                 element = Automata(q=current_states, expression=current_expression, alphabet=current_alphabet, q0=initial_state, f=final_state, transitions=current_transitions)
                 stack.append(element)
+    
+    #the last element in the stack is the final automata with all the "mini automatas" together
 
     last = stack.pop()
     for state in last.q: 

@@ -1,6 +1,13 @@
 from transition import *
 from automata import *
 
+
+"""
+    Method to calculate the e-closure
+    e-closure consists to calculate all the epsilon transitions starting from a node or nodes
+    @param nodes, transitions of the nfa
+    @return set of nodes 
+"""
 def eclosure(step, transitions):
     if isinstance(step, int):
         nodes = []
@@ -18,10 +25,13 @@ def eclosure(step, transitions):
         s.add(item)
     return s
 
-# return all moves
-# nodes = nodos en el que se encuentra ahorita
-# symbol = que letra vamos a mover
-# transitions = nuestras transiciones
+"""
+    Method to calculate the move starting from a node 
+    it consists to recognize all nodes wich i can go starting in an specific node
+    and moving only with transitions of the symbol to evaluate
+    @param nodes to start from, symbol to evaluate, transitions of nfa
+    @return a set of nodes
+"""
 def move(nodes, symbol, transitions):
     nodes = list(nodes)
     moves = []
@@ -47,10 +57,11 @@ def move(nodes, symbol, transitions):
             s.add(item)
         return s
 
-#shows possibles moves from a node and a symbol of the nfa
-#node = node which we want to know moves
-#symbols = symbol to use to find moves
-#transitions = afn transitions
+"""
+    Shows possibles moves from a node and a symbol of the nfa 
+    @param node which we want to know moves, symbol to evaluate, transitions of th nfa
+    @return transitions that match with node and symbol
+"""
 def possible_movements(node, symbols, transitions):
     moves = []
     for transition in transitions:
@@ -60,10 +71,9 @@ def possible_movements(node, symbols, transitions):
 
 
 """ 
-subset algorithm to convert nfa to dfa requires eclosure function and a function to know all
-the possibles moves
+    subset algorithm to convert nfa to dfa requires eclosure function and a function to know all
+    the possibles moves
 """
-
 def subsets_alg(afn):
     alphabet = afn.alphabet
     for character in alphabet:
